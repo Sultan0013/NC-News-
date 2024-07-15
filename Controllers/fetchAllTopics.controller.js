@@ -1,6 +1,6 @@
 const getTopics = require('../models/index');
 
-const fetchAllTopics = (req, res, next) => {
+exports.fetchAllTopics = (req, res, next) => {
     getTopics().then(({ rows }) => {
        
    res.status(200).send({ topics: rows });
@@ -9,4 +9,3 @@ const fetchAllTopics = (req, res, next) => {
     });
 };
 
-module.exports = { fetchAllTopics };

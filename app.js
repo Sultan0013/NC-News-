@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { fetchAllTopics } = require('./controllers');
+const {fetchAllTopics } = require('./controllers/fetchAllTopics.controller');
 
 app.use(express.json());
 

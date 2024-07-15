@@ -12,9 +12,9 @@ describe('ENDPoints', () => {
         return request(app)
             .get('/api/topics')
             .expect(200)
-            .then((response) => {
-                expect(response.body.topics).toHaveLength(topicData.length);
-                response.body.topics.forEach((topic, index) => {
+            .then(({body}) => {
+                expect(body.topics).toHaveLength(topicData.length);
+              body.topics.forEach((topic, index) => {
                     expect(topic).toHaveProperty('slug');
                     expect(topic).toHaveProperty('description');
                     expect(topic.slug).toBe(topicData[index].slug);
@@ -27,8 +27,8 @@ describe('ENDPoints', () => {
         return request(app)
             .get('/api/nonexistent')
             .expect(404)
-            .then((response) => {
-                expect(response.body.msg).toBe('Route Not Found');
+            .then(({body}) => {
+                expect(body.msg).toBe('Route Not Found');
             });
     });
 });

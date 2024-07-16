@@ -94,5 +94,27 @@ describe('GET/api/articles/article_id', () => {
 })
 
 
-
+describe('GET /api/articles', () => {
+    it('should respond with array of articles GET : 200', () => {
+        return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({body})=>{
+          
+           body.rows.forEach((article)=>{
+            expect(article).toEqual( 
+                expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String),
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                article_img_url: expect.any(String),
+                comment_count: expect.any(String) // Because it's returned as text by COUNT()
+              }))
+           }) 
+        })
+    })
     
+})

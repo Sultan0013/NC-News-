@@ -3,12 +3,15 @@ const app = express();
 const {fetchAllTopics}  = require('./controllers/fetchAllTopics.controller');
 const getALLapi = require('./Controllers/getAPI.controller')
 const fetchArticelById = require("./Controllers/fetArticlesById.controller")
+const getAllArticles = require('./Controllers/getAllArticles.controller')
 
 app.get('/api/topics', fetchAllTopics);
 
 app.get('/api' ,getALLapi);
 
 app.get('/api/articles/:article_id', fetchArticelById)
+
+app.get('/api/articles', getAllArticles)
 
 
 

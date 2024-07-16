@@ -101,7 +101,7 @@ describe('GET /api/articles', () => {
         .expect(200)
         .then(({body})=>{
           
-           body.rows.forEach((article)=>{
+           body.articles.forEach((article)=>{
             expect(article).toEqual( 
                 expect.objectContaining({
                 author: expect.any(String),
@@ -111,7 +111,7 @@ describe('GET /api/articles', () => {
                 created_at: expect.any(String),
                 votes: expect.any(Number),
                 article_img_url: expect.any(String),
-                comment_count: expect.any(String) // Because it's returned as text by COUNT()
+                comment_count: expect.any(Number) 
               }))
            }) 
         })

@@ -1,11 +1,12 @@
 const {fetchAllArticles} = require("../Models/getAllArticles.model")
 const getAllArticles =(req, resp, next)=>{
 
-   fetchAllArticles().then(articles=>{
+   fetchAllArticles().then((articles)=>{
 
-    resp.status(200).send(articles)
-   }).catch(error=>{
-    console.log(error)
+    resp.status(200).send({articles})
+   
+}).catch(error=>{
+
     next(err)
    })
     

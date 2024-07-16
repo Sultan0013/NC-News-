@@ -1,4 +1,4 @@
-const getTopics = require('../models/index');
+const getTopics = require("../Models/getTopics.model");
 
 exports.fetchAllTopics = (req, res, next) => {
     getTopics().then(({ rows }) => {

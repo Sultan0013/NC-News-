@@ -47,29 +47,48 @@ describe('GET /api', () => {
         
     })
 
-    it('GET 404: responds with "Route Not Found" for an unknown endpoint', () => {
+})
+
+
+describe('GET/api/articles/article_id', () => {
+    it('should respond with specific article', () => {
         return request(app)
-        .get('/ap')
-        .expect(404)
+        .get('/api/articles/5')
+        .expect(200)
         .then(({body})=>{
-            expect(body.msg).toBe("Route Not Found")
+            expect(body.article).toEqual([
+                {
+                  article_id: 5,
+                  title: 'UNCOVERED: catspiracy to bring down democracy',
+                  topic: 'cats',
+                  author: 'rogersop',
+                  body: 'Bastet walks amongst us, and the cats are taking arms!',
+                  created_at: '2020-08-03T13:14:00.000Z',
+                  votes: 0,
+                  article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+                }
+              ])
         })
-
-        
     })
 
-     it('checks for the keys of the recievd endpoint aas well number of them ', () => {
+    it('GET 400: should respond with error of bad request when article id is not a number ', () => {
         return request(app)
-        .get('/api')
-        .then(({body})=>{
-            const expectedKeys = ['GET /api','GET /api/topics' ,  'GET /api/articles', ];
-            const recievesKeys = Object.keys(body)
-            expect(recievesKeys.length).toBe(expectedKeys.length)
-           expectedKeys.forEach((key, index)=>{
-            expect(recievesKeys[index]).toBe(key)
-           })
-
-        
+        .get('/api/articles/NAN')
+        .expect(400)
+        .then((response)=>{
+          
+            expect(response.text).toBe('Bad Request')
+        })
     })
-     })
+
+
+    it('GET 404: should respond with error of not when article id is not in the articles ', () => {
+        return request(app)
+        .get('/api/articles/30')
+        .expect(404)
+        .then((response)=>{
+          
+            expect(response.text).toBe('Not Found')
+        })
+    })
 })

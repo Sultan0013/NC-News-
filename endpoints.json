@@ -45,7 +45,7 @@
     }
   },
   "GET /api/:article_id/comments" :{
-    "description" : "serves comments for sepecifc article Id",
+    "description" : "serves comments for sepecifc article Id or [] when there is no related comments for a specific ID",
     "queries" :[],
     "exampleResponse" :{
      " comments": [

@@ -124,7 +124,7 @@ describe('GET /api/articles', () => {
 describe('GET/api/:article_id/comments', () => {
     it('GET 200: should respond with an array of comments ', () => {
         return request(app)
-                .get('/api/3/comments')
+                .get('/api/articles/3/comments')
                 .expect(200)
                 .then(({body})=>{
                     expect(body.comments).toEqual( [
@@ -150,7 +150,7 @@ describe('GET/api/:article_id/comments', () => {
 
     it('GET 200:should check for the each key and their values  ', () => {
         return request(app)
-                .get('/api/1/comments')
+                .get('/api/articles/1/comments')
                 .expect(200)
                 .then(({body})=>{
                    body.comments.forEach((comment)=>{ expect(comment).toEqual(
@@ -169,9 +169,22 @@ describe('GET/api/:article_id/comments', () => {
                 })
     })
 
-    it('GET 400: should return error of 400 with msg of bbad request when passong a non-exostent ID', () => {
+  /*need to include a test for an article which has no associated comments (find one in your db)
+In this case we would expect 200 returns an empty array
+Please note: Once you add this test and get it to pass, your 404 test will then no longer pass and will require additional logic to get it to go green */
+  
+it('GET 200: should respond with an empty array for an article which exists with no comments', () => {
         return request(app)
-        .get('/api/non-existent/comments')
+            .get('/api/articles/2/comments') 
+            .expect(200)
+            .then(({ body }) => {
+                expect(body.comments).toEqual([]);
+            });
+    });
+
+    it('GET 400: should return error of 400 with msg of bad request when passong a non-exostent ID', () => {
+        return request(app)
+        .get('/api/articles/non-existent/comments')
         .expect(400)
         .then(({text})=>{
 
@@ -179,13 +192,18 @@ describe('GET/api/:article_id/comments', () => {
         })
     })
 
-    it('GET 404 :should return error of 404 with msg of Not found when theirs no comments for that specific_id', () => {
+    it('GET 404 :should return error of 404 with msg of Not found when theirs no comments for that specific_id or there is no article by that Id', () => {
         return request(app)
-        .get('/api/20/comments')
+        .get('/api/articles/20/comments')
         .expect(404)
         .then(({text})=>{
 
             expect(text).toBe("Not Found")
         })
     })
+
+    
 })
+
+
+

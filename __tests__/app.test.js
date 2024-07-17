@@ -118,3 +118,74 @@ describe('GET /api/articles', () => {
     })
     
 })
+
+
+
+describe('GET/api/:article_id/comments', () => {
+    it('GET 200: should respond with an array of comments ', () => {
+        return request(app)
+                .get('/api/3/comments')
+                .expect(200)
+                .then(({body})=>{
+                    expect(body.comments).toEqual( [
+                        {
+                        comment_id: 11,
+                          body: 'Ambidextrous marsupial',
+                          article_id: 3,
+                          author: 'icellusedkars',
+                          votes: 0,
+                          created_at: "2020-09-19T23:10:00.000Z"
+                        },
+                        {
+                          comment_id: 10,
+                          body: 'git push origin master',
+                          article_id: 3,
+                          author: 'icellusedkars',
+                          votes: 0,
+                          created_at: "2020-06-20T07:24:00.000Z"
+                        }
+                      ])
+                })
+    })
+
+    it('GET 200:should check for the each key and their values  ', () => {
+        return request(app)
+                .get('/api/1/comments')
+                .expect(200)
+                .then(({body})=>{
+                   body.comments.forEach((comment)=>{ expect(comment).toEqual(
+                        expect.objectContaining(
+                            {
+                                comment_id : expect.any(Number),
+                                body : expect.any(String),
+                                article_id : expect.any(Number)&& 1,
+                                author : expect.any(String),
+                                votes : expect.any(Number),
+                                created_at : expect.any(String)
+
+                            }
+                        )
+                    )})
+                })
+    })
+
+    it('GET 400: should return error of 400 with msg of bbad request when passong a non-exostent ID', () => {
+        return request(app)
+        .get('/api/non-existent/comments')
+        .expect(400)
+        .then(({text})=>{
+
+            expect(text).toBe("bad request")
+        })
+    })
+
+    it('GET 404 :should return error of 404 with msg of Not found when theirs no comments for that specific_id', () => {
+        return request(app)
+        .get('/api/20/comments')
+        .expect(404)
+        .then(({text})=>{
+
+            expect(text).toBe("Not Found")
+        })
+    })
+})

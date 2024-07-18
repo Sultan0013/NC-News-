@@ -19,4 +19,4 @@ if(typeof username != "string"|| typeof body != 'string'){
     
 }
 
-module.exports = {addNewComment}
+module.exports = addNewComment

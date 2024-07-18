@@ -1,10 +1,11 @@
 const db= require('../db/connection')
 
 function update_Article (article_id,inc_votes){
-    if (isNaN(article_id)) {
+   
+    if (isNaN(article_id) ||isNaN(inc_votes) ) {
         return Promise.reject({
             status: 400,
-            msg: 'Bad Request - invalid article_id'
+            msg: 'Bad Request'
         });
     }
 

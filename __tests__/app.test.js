@@ -349,7 +349,7 @@ describe('PATCH /api/articles/:article_id', () => {
         return request(app)
         .patch('/api/articles/1')
         .send(voteInfo)
-        .expect(201)
+        .expect(200)
         .then(({body})=>{
             expect(body.article).toEqual( 
                 {
@@ -373,7 +373,7 @@ describe('PATCH /api/articles/:article_id', () => {
         return request(app)
         .patch('/api/articles/5')
         .send(voteInfo)
-        .expect(201)
+        .expect(200)
         .then(({body})=>{
             expect(body.article).toEqual( 
                 {
@@ -397,7 +397,7 @@ describe('PATCH /api/articles/:article_id', () => {
         return request(app)
         .patch('/api/articles/5')
         .send(voteInfo)
-        .expect(201)
+        .expect(200)
         .then(({body})=>{
             expect(body.article).toEqual( 
                 {
@@ -422,7 +422,7 @@ describe('PATCH /api/articles/:article_id', () => {
         return request(app)
         .patch('/api/articles/5')
         .send(voteInfo)
-        .expect(201)
+        .expect(200)
         .then(({body})=>{
             expect(body.article).toEqual( 
                 {
@@ -451,7 +451,7 @@ describe('PATCH /api/articles/:article_id', () => {
             .expect(400)
             .then(({text})=>{
               
-                expect(text).toBe('Bad Request - invalid article_id')
+                expect(text).toBe('Bad Request')
             })
 
     })
@@ -480,7 +480,7 @@ describe('PATCH /api/articles/:article_id', () => {
             .expect(400)
             .then(({text})=>{
               
-                expect(text).toBe('Bad Request ')
+                expect(text).toBe('Bad Request')
             })
 
     })
@@ -497,8 +497,36 @@ describe('PATCH /api/articles/:article_id', () => {
             .expect(400)
             .then(({text})=>{
               
-                expect(text).toBe('Bad Request ')
+                expect(text).toBe('Bad Request')
             })
 
     })
+})
+
+
+describe('DELETE /api/comments/:comment_id', () => {
+    it('DELETE 204 : No content - drops the specifc comment specifed by comment-id', () => {
+        return request(app)
+        .delete('/api/comments/2')
+        .expect(204)
+        })
+
+        it('DELETE 400 :bad request - responds with error for invalid ids', () => {
+            return request(app)
+            .delete('/api/comments/nan')
+            .expect(400)
+            .then((resp)=>{
+                expect(resp.text).toBe("Bad Request")
+            })
+            })
+
+            it('DELETE 404 :Not Found - responds with error for non-esxistent_id', () => {
+                return request(app)
+                .delete('/api/comments/100')
+                .expect(404)
+                .then((resp)=>{
+                    expect(resp.text).toBe("Not Found")
+                })
+                })
+    
 })

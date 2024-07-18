@@ -1,5 +1,5 @@
 const getArticle = require('../Models/fetchArticleById.model')
-const fetchArticleBId = (req , res , next)=>{
+const fetchArticleById = (req , res , next)=>{
     const {article_id} = req.params
 
     getArticle(article_id).then(({rows})=>{
@@ -14,4 +14,4 @@ const fetchArticleBId = (req , res , next)=>{
 }
 
 
-module.exports = fetchArticleBId
+module.exports = fetchArticleById

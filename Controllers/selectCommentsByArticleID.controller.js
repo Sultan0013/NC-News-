@@ -10,4 +10,4 @@ const selectCommentsByArticleId = (req, resp , next)=>{
    })
 }
 
-module.exports = {selectCommentsByArticleId}
+module.exports = selectCommentsByArticleId

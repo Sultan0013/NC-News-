@@ -208,10 +208,11 @@ Please note: Once you add this test and get it to pass, your 404 test will then 
 
 describe('POST /api/articles/:article_id/comments', () => {
     
-    it('POST 200: should respond with the new comment', () => {
+    it('POST 201: should respond with the new comment', () => {
         const newComment = {
             username : 'rogersop',
-            body : 'This is a test comment'
+            body : 'This is a test comment',
+            testProperty : 'test-value'
         }
 
         return request(app)
@@ -233,14 +234,38 @@ describe('POST /api/articles/:article_id/comments', () => {
 
     })
 
-    it('POST 400: should respond with an erroe status of 400 and message of bad request for non-exist id', () => {
+    it('POST 201: should ignore any additional property and return the new comment  ', () => {
         const newComment = {
             username : 'rogersop',
             body : 'This is a test comment'
         }
 
         return request(app)
-            .post('/api/articles/non-existent/comments')
+            .post('/api/articles/1/comments')
+            .send(newComment)
+            .expect(201)
+            .then(({body})=>{
+              
+                expect(body.Comment).toEqual( 
+                    expect.objectContaining
+                  ( { comment_id: expect.any(Number),
+                    body: expect.any(String) && 'This is a test comment',
+                    article_id:expect.any(Number) &&1,
+                    author: expect.any(String) &&'rogersop',
+                    votes: expect.any(Number),
+                    created_at: expect.any(String)})
+                  )
+            })
+    })
+
+    it('POST 400 "Not-and-id": should respond with an erroe status of 400 and message of bad request for string of "not-and-ud"', () => {
+        const newComment = {
+            username : 'rogersop',
+            body : 'This is a test comment'
+        }
+
+        return request(app)
+            .post('/api/articles/not-and-id/comments')
             .send(newComment)
             .expect(400)
             .then(({text})=>{
@@ -250,7 +275,7 @@ describe('POST /api/articles/:article_id/comments', () => {
 
     })
 
-    it('POST 404: should respond with error message of 404 and message of Not Found when there is no article with the speceifc ID ', () => {
+    it('POST 404 "not-existent-id": should respond with error message of 404 and message of Not Found when there is no article with the speceifc ID ', () => {
         const newComment = {
             username : 'rogersop',
             body : 'This is a test comment'
@@ -281,6 +306,199 @@ describe('POST /api/articles/:article_id/comments', () => {
             })
 
     })
+    it('POST 400:should respond with error of 400 and message of bad request when the username or body key os not string ', () => {
+        const newComment = {
+            username : 1,
+            body : []
+          }
+
+        return request(app)
+            .post('/api/articles/1/comments')
+            .send(newComment)
+            .expect(400)
+            .then(({text})=>{
+                expect(text).toBe('Bad Request')
+            })
+
+    })
+
+    it('POST 400:should respond with error of 400 and message of bad request when the newcomment does not contain the username or body key ', () => {
+        const newComment = {
+            testProperty : 'test-value'
+          }
+
+        return request(app)
+            .post('/api/articles/1/comments')
+            .send(newComment)
+            .expect(400)
+            .then(({text})=>{
+                expect(text).toBe('Bad Request')
+            })
+
+    })
+
+  
 })
 
 
+describe('PATCH /api/articles/:article_id', () => {
+    it('PATCH 201 :decrements the article and responds with the updated article with the votes decremented by the given votes key ', () => {
+        const voteInfo  = {
+            inc_votes : -10
+        }
+        return request(app)
+        .patch('/api/articles/1')
+        .send(voteInfo)
+        .expect(201)
+        .then(({body})=>{
+            expect(body.article).toEqual( 
+                {
+                  article_id: 1,
+                  title: 'Living in the shadow of a great man',
+                  topic: 'mitch',
+                  author: 'butter_bridge',
+                  body: 'I find this existence challenging',
+                  created_at: "2020-07-09T20:11:00.000Z",
+                  votes: 90,
+                  article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+                }
+              )
+        })
+    })
+
+    it('PATCH 201 : increments the article votes  and responds with the updated article votes ', () => {
+        const voteInfo  = {
+            inc_votes : 10
+        }
+        return request(app)
+        .patch('/api/articles/5')
+        .send(voteInfo)
+        .expect(201)
+        .then(({body})=>{
+            expect(body.article).toEqual( 
+                {
+                    article_id: 5,
+                    title: 'UNCOVERED: catspiracy to bring down democracy',
+                    topic: 'cats',
+                    author: 'rogersop',
+                    body: 'Bastet walks amongst us, and the cats are taking arms!',
+                    created_at: "2020-08-03T13:14:00.000Z",
+                    votes: 10,
+                    article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+                  }
+              )
+        })
+    })
+
+    it('PATCH 201 : decrements the article votes  and responds with the updated article the votes must not be smaller than 0 || must not be negaitve number', () => {
+        const voteInfo  = {
+            inc_votes : -10
+        }
+        return request(app)
+        .patch('/api/articles/5')
+        .send(voteInfo)
+        .expect(201)
+        .then(({body})=>{
+            expect(body.article).toEqual( 
+                {
+                    article_id: 5,
+                    title: 'UNCOVERED: catspiracy to bring down democracy',
+                    topic: 'cats',
+                    author: 'rogersop',
+                    body: 'Bastet walks amongst us, and the cats are taking arms!',
+                    created_at: "2020-08-03T13:14:00.000Z",
+                    votes: 0,
+                    article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+                  }
+              )
+        })
+    })
+
+    it('PATCH 201 : increments the article votes  and responds with the updated article votes and ignores any extra property of voteInfo', () => {
+        const voteInfo  = {
+            inc_votes : 10,
+            extraProperty : 'test-value'
+        }
+        return request(app)
+        .patch('/api/articles/5')
+        .send(voteInfo)
+        .expect(201)
+        .then(({body})=>{
+            expect(body.article).toEqual( 
+                {
+                    article_id: 5,
+                    title: 'UNCOVERED: catspiracy to bring down democracy',
+                    topic: 'cats',
+                    author: 'rogersop',
+                    body: 'Bastet walks amongst us, and the cats are taking arms!',
+                    created_at: "2020-08-03T13:14:00.000Z",
+                    votes: 10,
+                    article_img_url: 'https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700'
+                  }
+              )
+        })
+    })
+    
+
+
+    it('PATCH 400: should respond with an erroe status of 400 and message of bad request for non-exist id', () => {
+        const voteInfo  = {
+            inc_votes : -10
+        }
+        return request(app)
+        .patch('/api/articles/nan')
+        .send(voteInfo)
+            .expect(400)
+            .then(({text})=>{
+              
+                expect(text).toBe('Bad Request - invalid article_id')
+            })
+
+    })
+
+    it('PATCH 404: should respond with error message of 404 and message of Not Found when there is no article with the speceifc ID ', () => {
+        const voteInfo  = {
+            inc_votes : -10
+        }
+        return request(app)
+        .patch('/api/articles/100')
+        .send(voteInfo)
+            .expect(404)
+            .then(({text})=>{
+                expect(text).toBe('Not Found')
+            })
+
+    })
+
+    it('PATCH 400: should respond with an error status of 400 and message of bad request when value of passed votes is nan', () => {
+        const voteInfo  = {
+            inc_votes : 'nan'
+        }
+        return request(app)
+        .patch('/api/articles/nan')
+        .send(voteInfo)
+            .expect(400)
+            .then(({text})=>{
+              
+                expect(text).toBe('Bad Request ')
+            })
+
+    })
+
+
+
+    it('PATCH 400: should respond with an error status of 400 and message of bad request the sended object does not has the property pf inc_votes', () => {
+        const voteInfo  = {
+            anythingElse: 'test-value'
+        }
+        return request(app)
+        .patch('/api/articles/nan')
+        .send(voteInfo)
+            .expect(400)
+            .then(({text})=>{
+              
+                expect(text).toBe('Bad Request ')
+            })
+
+    })
+})

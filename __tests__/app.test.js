@@ -173,7 +173,7 @@ describe('GET/api/:article_id/comments', () => {
 In this case we would expect 200 returns an empty array
 Please note: Once you add this test and get it to pass, your 404 test will then no longer pass and will require additional logic to get it to go green */
   
-it('GET 200: should respond with an empty array for an article which exists with no comments', () => {
+    it('GET 200: should respond with an empty array for an article which exists with no comments', () => {
         return request(app)
             .get('/api/articles/2/comments') 
             .expect(200)
@@ -205,5 +205,82 @@ it('GET 200: should respond with an empty array for an article which exists with
     
 })
 
+
+describe('POST /api/articles/:article_id/comments', () => {
+    
+    it('POST 200: should respond with the new comment', () => {
+        const newComment = {
+            username : 'rogersop',
+            body : 'This is a test comment'
+        }
+
+        return request(app)
+            .post('/api/articles/1/comments')
+            .send(newComment)
+            .expect(201)
+            .then(({body})=>{
+              
+                expect(body.Comment).toEqual( 
+                    expect.objectContaining
+                  ( { comment_id: expect.any(Number),
+                    body: expect.any(String) && 'This is a test comment',
+                    article_id:expect.any(Number) &&1,
+                    author: expect.any(String) &&'rogersop',
+                    votes: expect.any(Number),
+                    created_at: expect.any(String)})
+                  )
+            })
+
+    })
+
+    it('POST 400: should respond with an erroe status of 400 and message of bad request for non-exist id', () => {
+        const newComment = {
+            username : 'rogersop',
+            body : 'This is a test comment'
+        }
+
+        return request(app)
+            .post('/api/articles/non-existent/comments')
+            .send(newComment)
+            .expect(400)
+            .then(({text})=>{
+              
+                expect(text).toBe('Bad Request')
+            })
+
+    })
+
+    it('POST 404: should respond with error message of 404 and message of Not Found when there is no article with the speceifc ID ', () => {
+        const newComment = {
+            username : 'rogersop',
+            body : 'This is a test comment'
+        }
+
+        return request(app)
+            .post('/api/articles/100/comments')
+            .send(newComment)
+            .expect(404)
+            .then(({text})=>{
+                expect(text).toBe('Not Found')
+            })
+
+    })
+
+    it('POST 404: should return with error message of 404 and message of UserName not found when the passed username does not exist  ', () => {
+        const newComment = {
+            username : 'non-exist username',
+            body : 'This is a test comment'
+        }
+
+        return request(app)
+            .post('/api/articles/1/comments')
+            .send(newComment)
+            .expect(404)
+            .then(({text})=>{
+                expect(text).toBe('User Name Not Found')
+            })
+
+    })
+})
 
 

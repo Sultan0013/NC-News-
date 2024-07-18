@@ -5,6 +5,10 @@ const getALLapi = require('./Controllers/getAPI.controller')
 const fetchArticelById = require("./Controllers/fetArticlesById.controller")
 const getAllArticles = require('./Controllers/getAllArticles.controller')
 const {selectCommentsByArticleId} = require('./Controllers/selectCommentsByArticleID.controller')
+const {addNewComment} = require('./Controllers/addNewComment.controller')
+
+
+app.use(express.json());
 
 app.get('/api/topics', fetchAllTopics);
 
@@ -15,6 +19,9 @@ app.get('/api/articles/:article_id', fetchArticelById)
 app.get('/api/articles', getAllArticles)
 
 app.get('/api/articles/:article_id/comments' , selectCommentsByArticleId )
+
+
+app.post('/api/articles/:article_id/comments' ,addNewComment)
 
 app.use((req, res, next) => {
     res.status(404).send({ msg: 'Route Not Found' });

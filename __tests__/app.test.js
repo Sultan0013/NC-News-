@@ -153,6 +153,64 @@ describe("GET /api/articles", () => {
     })
 
   })
+
+  describe('GET/api/articles topic query', () => {
+    it('GET 200: responds with the article with the specific topic ', () => {
+      return request(app)
+        .get('/api/articles?topic=cats')
+        .expect(200)
+        .then(({body})=>{
+      
+          expect(body.articles[0]).toEqual(expect.objectContaining({
+            author: expect.any(String),
+            title: expect.any(String),
+            article_id:expect.any(Number),
+            topic: expect.any(String)&& 'cats',
+            created_at: expect.any(String),
+            votes:expect.any(Number),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(Number)
+          }))
+        
+        })
+
+        
+    })
+
+    it('GET 200: responds with the articles with the specific topic  sorted and ordered', () => {
+      return request(app)
+        .get('/api/articles?sort_by=title&order=asc&topic=mitch')
+        .expect(200)
+        .then(({body})=>{
+          expect(body.articles).toBeSortedBy('title',{descending : false})
+          body.articles.forEach((article)=>{
+            expect(article).toEqual(expect.objectContaining({
+              author: expect.any(String),
+              title: expect.any(String),
+              article_id:expect.any(Number),
+              topic: expect.any(String) && "mitch",
+              created_at: expect.any(String),
+              votes:expect.any(Number),
+              article_img_url: expect.any(String),
+              comment_count: expect.any(Number)
+            }))
+          })
+        
+        })
+        })
+
+
+
+ it('GET 400: responds with error 400 when the passed topic is not in the article', () => {
+      return request(app)
+        .get('/api/articles?topic=123')
+        .expect(404)
+        .then((resp)=>{
+          expect(resp.text).toBe("Not Found")
+        })
+    })
+  })
+  
 });
 
 

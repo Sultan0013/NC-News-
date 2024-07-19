@@ -1,6 +1,17 @@
 const db = require('../db/connection')
 
-function fetchAllArticles (){
+function fetchAllArticles (sort_by = "created_at" , order='desc'){
+
+  const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'article_img_url'];
+  const validOrders = ['asc', 'desc'];
+
+  if (!validColumns.includes(sort_by)) {
+      return Promise.reject({ status: 400, msg: 'Invalid sort_by column' });
+  }
+
+  if (!validOrders.includes(order)) {
+      return Promise.reject({ status: 400, msg: 'Invalid order value' });
+  }
     return db.query(`
     SELECT 
       articles.author, 
@@ -18,7 +29,7 @@ function fetchAllArticles (){
     GROUP BY 
       articles.article_id
     ORDER BY 
-      articles.created_at DESC;
+     ${sort_by} ${order};
   `).then(({rows})=>{
     return rows
   })

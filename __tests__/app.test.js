@@ -1,6 +1,7 @@
 const db = require("../db/connection.js");
 const request = require("supertest");
 const app = require("../app.js");
+require('jest-sorted')
 const {
   articleData,
   commentData,
@@ -113,7 +114,50 @@ describe("GET /api/articles", () => {
         });
       });
   });
+  describe('GET /api/articles sorting queries', () => {
+    it('GET 200: responds with the articles where the sort by and order is default ', () => {
+      return request(app)
+        .get('/api/articles')
+        .expect(200)
+        .then(({body})=>{
+          expect(body.articles).toBeSortedBy('created_at',{descending : true})
+        })
+    })
+
+
+    it('GET 200: responds with the articles array where they are in sort of author and ascending order', () => {
+      return request(app)
+        .get('/api/articles?sort_by=author&order=asc')
+        .expect(200)
+        .then(({body})=>{
+          expect(body.articles).toBeSortedBy('author',{descending: false})
+        })
+    })
+
+    it('GET 400: responds with error 400 when the passed sortby value is not included in the sort_by columns array', () => {
+      return request(app)
+        .get('/api/articles?sort_by=body&order=asc')
+        .expect(400)
+        .then((resp)=>{
+          expect(resp.text).toBe("Invalid sort_by column")
+        })
+    })
+
+    it('GET 400: responds with error 400 when the passed order value is not included in the order array', () => {
+      return request(app)
+        .get('/api/articles?sort_by=created_at&order=invalid_order')
+        .expect(400)
+        .then((resp)=>{
+          expect(resp.text).toBe("Invalid order value")
+        })
+    })
+
+  })
 });
+
+
+
+
 
 describe("GET/api/:article_id/comments", () => {
   it("GET 200: should respond with an array of comments ", () => {

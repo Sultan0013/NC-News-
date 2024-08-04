@@ -613,5 +613,25 @@ describe("Get /api/users", () => {
       });
   });
 
+  // describe('GEt /api/users/:username', () => {
+  //   it('GET 200 :should respond with an object of username , avatar_url and name', () => {
+  //     return request(app)
+  //       .get('/api/user/rogersop')
+  //       .expect(200)
+  //       .then(({ body }) => {
+          
+        
+  //         expect(body.user).toEqual(
+  //           expect.objectContaining({
+  //             username: expect.any(String) && "rogersop",
+  //             avatar_url: expect.any(String),
+  //             name : expect.any(String)
+  //         })
+  //       )
+  //     })
+  //   });
+
+
+  // })
  
 });

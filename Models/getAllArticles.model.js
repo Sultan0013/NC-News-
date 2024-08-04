@@ -32,9 +32,6 @@ function fetchAllArticles (sort_by = "created_at" , order='desc' , topic){
     
   
       if(topic){
-
-        
-
         queryString += 
        ` WHERE articles.topic = $1
           GROUP BY 

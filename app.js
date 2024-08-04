@@ -40,7 +40,7 @@ commentsRouter.delete("/:comment_id", deleteComment);
 usersRouter.get("/", fetchAllUsers);
 
 // Define routes for API info
-apiRouter.get("/", getALLapi);
+apiRouter.get("", getALLapi);
 
 
 

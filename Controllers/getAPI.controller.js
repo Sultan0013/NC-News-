@@ -1,6 +1,6 @@
 const fs = require("fs")
 
-const getALLapi = ((req, resp, err)=>{
+const getALLapi = ((req, resp, next)=>{
    try{
     const apidata = fs.readFileSync('/Users/sultandara/Desktop/NorthCoders/backend/be-nc-news/endpoints.json', 'utf-8')
     resp.status(200).send(JSON.parse(apidata))

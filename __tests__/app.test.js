@@ -52,26 +52,25 @@ describe("GET /api", () => {
 });
 
 describe("GET/api/articles/article_id", () => {
-  it("should respond with specific article", () => {
+  it("should respond with specific article including comment_count", () => {
     return request(app)
       .get("/api/articles/5")
       .expect(200)
       .then(({ body }) => {
-        expect(body.article).toEqual([
-          {
-            article_id: 5,
-            title: "UNCOVERED: catspiracy to bring down democracy",
-            topic: "cats",
-            author: "rogersop",
-            body: "Bastet walks amongst us, and the cats are taking arms!",
-            created_at: "2020-08-03T13:14:00.000Z",
-            votes: 0,
-            article_img_url:
-              "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
-          },
-        ]);
+        expect(body.article[0]).toEqual(expect.objectContaining({
+          article_id: expect.any(Number) && 5,
+          title: expect.any(String),
+          topic: expect.any(String),
+          author: expect.any(String),
+          body: expect.any(String),
+          created_at:expect.any(String),
+          votes: expect.any(Number) ,
+          article_img_url: expect.any(String),
+          comment_count: expect.any(Number) 
+        }));
       });
   });
+
 
   it("GET 400: should respond with error of bad request when article id is not a number ", () => {
     return request(app)

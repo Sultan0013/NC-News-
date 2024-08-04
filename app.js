@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 
+
 const {
   addNewComment,
   deleteComment,
@@ -15,33 +16,52 @@ const {
 
 app.use(express.json());
 
-app.get("/api/topics", fetchAllTopics);
+// the routers for each task
+const topicsRouter = express.Router();
+const articlesRouter = express.Router();
+const commentsRouter = express.Router();
+const usersRouter = express.Router();
+const apiRouter = express.Router();
 
-app.get("/api", getALLapi);
+//topics router
+topicsRouter.get("/", fetchAllTopics);
 
-app.get("/api/articles/:article_id", fetchArticleById);
+// article routers
+articlesRouter.get("/:article_id", fetchArticleById);
+articlesRouter.get("/", getAllArticles);
+articlesRouter.get("/:article_id/comments", selectCommentsByArticleId);
+articlesRouter.post("/:article_id/comments", addNewComment);
+articlesRouter.patch("/:article_id", updateArticle);
 
-app.get("/api/articles", getAllArticles);
+//comments routers
+commentsRouter.delete("/:comment_id", deleteComment);
 
-app.get("/api/articles/:article_id/comments", selectCommentsByArticleId);
+//users routers
+usersRouter.get("/", fetchAllUsers);
 
-app.get("/api/users", fetchAllUsers);
+// Define routes for API info
+apiRouter.get("/", getALLapi);
 
-app.post("/api/articles/:article_id/comments", addNewComment);
 
-app.patch("/api/articles/:article_id", updateArticle);
 
-app.delete("/api/comments/:comment_id", deleteComment);
+app.use("/api/topics", topicsRouter);
+app.use("/api/articles", articlesRouter);
+app.use("/api/comments", commentsRouter);
+app.use("/api/users", usersRouter);
+app.use("/api", apiRouter);
+
 
 app.use((req, res, next) => {
   res.status(404).send({ msg: "Route Not Found" });
 });
 
+
 app.use((error, req, res, next) => {
   if (error.status) {
-    res.status(error.status).send(error.msg);
+    res.status(error.status).send(error.msg );
+  } else {
+    res.status(500).send({ msg: "Internal Server Error" });
   }
-  res.status(500).send({ msg: "Internal Srver Error" });
 });
 
 module.exports = app;

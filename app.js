@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 
 const {
   addNewComment,
@@ -12,8 +13,9 @@ const {
   updateArticle,
   fetchAllUsers,
 } = require("./Controllers/index.js");
-
+app.use(cors());
 app.use(express.json());
+
 
 app.get("/api/topics", fetchAllTopics);
 

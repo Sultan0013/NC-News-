@@ -10,9 +10,7 @@
     "prepare": "husky install",
     "app-test": "jest ./__tests__/app.test.js ",
     "start": "node listen.js",
-     "seed-prod": "NODE_ENV=production npm run seed"
-      
-    
+    "seed-prod": "NODE_ENV=production npm run seed"
   },
   "repository": {
     "type": "git",
@@ -26,15 +24,15 @@
   },
   "homepage": "https://github.com/northcoders/be-nc-news#readme",
   "devDependencies": {
-    
     "jest": "^27.5.1",
     "jest-extended": "^2.0.0",
     "pg-format": "^1.0.4"
   },
   "dependencies": {
-    "husky": "^8.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.19.2",
+    "husky": "^8.0.2",
     "jest-sorted": "^1.0.15",
     "pg": "^8.7.3",
     "supertest": "^7.0.0"

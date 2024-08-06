@@ -8,7 +8,7 @@ const updateArticle = (req,res,next)=>{
 
     const {article_id} = req.params
 update_Article(article_id,inc_votes).then((article)=>{
-  res.status(200).send({article})
+  res.status(201).send({article})
 }).catch(err=>{
     next(err)
 })

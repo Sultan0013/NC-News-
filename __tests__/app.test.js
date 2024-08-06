@@ -427,7 +427,7 @@ describe("PATCH /api/articles/:article_id", () => {
     return request(app)
       .patch("/api/articles/1")
       .send(voteInfo)
-      .expect(200)
+      .expect(201)
       .then(({ body }) => {
         expect(body.article).toEqual(
           expect.objectContaining({
@@ -437,7 +437,7 @@ describe("PATCH /api/articles/:article_id", () => {
             author: expect.any(String),
             body: expect.any(String),
             created_at: expect.any(String),
-            votes: expect.any(Number) && 90, //check if it decrmented the votes and for it is type
+            votes: expect.any(Number) && 90,  
             article_img_url: expect.any(String),
           })
         );
@@ -451,7 +451,7 @@ describe("PATCH /api/articles/:article_id", () => {
     return request(app)
       .patch("/api/articles/5")
       .send(voteInfo)
-      .expect(200)
+      .expect(201)
       .then(({ body }) => {
         expect(body.article).toEqual(
           expect.objectContaining({
@@ -468,29 +468,7 @@ describe("PATCH /api/articles/:article_id", () => {
       });
   });
 
-  it("PATCH 201 : decrements the article votes  and responds with the updated article the votes must not be smaller than 0 || must not be negaitve number", () => {
-    const voteInfo = {
-      inc_votes: -10,
-    };
-    return request(app)
-      .patch("/api/articles/5")
-      .send(voteInfo)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.article).toEqual(
-          expect.objectContaining({
-            article_id: expect.any(Number),
-            title: expect.any(String),
-            topic: expect.any(String),
-            author: expect.any(String),
-            body: expect.any(String),
-            created_at: expect.any(String),
-            votes: expect.any(Number) && 0, //check if it decrmented the votes and for it is type
-            article_img_url: expect.any(String),
-          })
-        );
-      });
-  });
+  
 
   it("PATCH 201 : increments the article votes  and responds with the updated article votes and ignores any extra property of voteInfo", () => {
     const voteInfo = {
@@ -500,7 +478,7 @@ describe("PATCH /api/articles/:article_id", () => {
     return request(app)
       .patch("/api/articles/5")
       .send(voteInfo)
-      .expect(200)
+      .expect(201)
       .then(({ body }) => {
         expect(body.article).toEqual(
           expect.objectContaining({

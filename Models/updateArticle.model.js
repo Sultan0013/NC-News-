@@ -1,8 +1,8 @@
-const db= require('../db/connection')
+const db = require('../db/connection');
 
-function update_Article (article_id,inc_votes){
-   
-    if (isNaN(article_id) ||isNaN(inc_votes) ) {
+function update_Article(article_id, inc_votes) {
+    // Validate input
+    if (isNaN(article_id)) {
         return Promise.reject({
             status: 400,
             msg: 'Bad Request'
@@ -16,8 +16,10 @@ function update_Article (article_id,inc_votes){
         WHERE article_id = $2
         RETURNING *;
     `;
-   const values = [inc_votes, article_id]
-   return db.query(checkQuery, [article_id])
+    const values = [inc_votes, article_id];
+
+    // Check if article exists
+    return db.query(checkQuery, [article_id])
         .then(({ rows }) => {
             if (rows.length === 0) {
                 return Promise.reject({
@@ -25,28 +27,13 @@ function update_Article (article_id,inc_votes){
                     msg: 'Not Found'
                 });
             }
-          
-        let updatedVotes;
-            let  currentVotes = rows[0].votes;
-            const checkForSum = currentVotes + inc_votes
-         
-            if (checkForSum<= 0) {
-              updatedVotes = 0
-              
-              
-           return db.query(` UPDATE articles
-           SET votes = votes + $1
-           WHERE article_id = $2
-           RETURNING *;`, [updatedVotes, article_id]);
-            }
 
-
-           return db.query(updateQuery, values);
-        }).then(({ rows }) => {
-
+            // Proceed with updating the vote count
+            return db.query(updateQuery, values);
+        })
+        .then(({ rows }) => {
             return rows[0];
         });
-      
 }
 
-module.exports ={update_Article}
+module.exports = { update_Article };

@@ -371,24 +371,25 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(404)
       .then(({ text }) => {
+      
         expect(text).toBe("Not Found");
       });
   });
 
-  // it("POST 404: should return with error message of 404 and message of UserName not found when the passed username does not exist  ", () => {
-  //   const newComment = {
-  //     username: "non-exist username",
-  //     body: "This is a test comment",
-  //   };
+  it("POST 404: should return with error message of 404 and message of UserName not found when the passed username does not exist  ", () => {
+    const newComment = {
+      username: "non-exist username",
+      body: "This is a test comment",
+    };
 
-  //   return request(app)
-  //     .post("/api/articles/1/comments")
-  //     .send(newComment)
-  //     .expect(404)
-  //     .then(({ text }) => {
-  //       expect(text).toBe("User Name Not Found");
-  //     });
-  //});
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ text }) => {
+        expect(text).toBe("Not Found");
+      });
+  });
   it("POST 400:should respond with error of 400 and message of bad request when the username or body key os not string ", () => {
     const newComment = {
       username: 1,

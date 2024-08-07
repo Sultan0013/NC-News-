@@ -12,7 +12,7 @@ if(typeof username != "string"|| typeof body != 'string'){
 }
 
     addComment(username, body, article_id).then((comment) => {
-        console.log(comment);
+       
         response.status(201).send({Comment: comment[0]})
     }).catch(err=>{
         next(err)

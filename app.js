@@ -35,6 +35,18 @@ app.patch("/api/articles/:article_id", updateArticle);
 
 app.delete("/api/comments/:comment_id", deleteComment);
 
+app.use((err, request, response, next) => {
+    if(err.code === '22P02' || err.code === '23502'){
+        response.status(400).send({ msg: "Bad Request" })
+        
+    }else if(err.code === '23503'){
+        response.status(404).send('Not Found' )
+    }
+    
+    else{
+        next(err);
+    }
+});
 app.use((req, res, next) => {
   res.status(404).send({ msg: "Route Not Found" });
 });

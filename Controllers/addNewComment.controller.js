@@ -11,8 +11,9 @@ if(typeof username != "string"|| typeof body != 'string'){
     })
 }
 
-    addComment(username, body, article_id).then(({rows})=>{
-        response.status(201).send({Comment :rows[0]})
+    addComment(username, body, article_id).then((comment) => {
+        console.log(comment);
+        response.status(201).send({Comment: comment[0]})
     }).catch(err=>{
         next(err)
     })

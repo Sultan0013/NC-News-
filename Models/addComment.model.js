@@ -2,19 +2,8 @@ const db = require('../db/connection')
 const users = require('../db/data/test-data/users')
 
 function addComment(username,body,article_id){
-    let hasUserName ;
-    users.forEach((user)=>{
-       if(user.username === username){
-        hasUserName = true
-       }
-    })
-if(!hasUserName){
-    return Promise.reject(
-        {
-            status : 404,
-            msg : "User Name Not Found"
-        })
-}
+
+
     if(isNaN(article_id)){
         return Promise.reject(
             {

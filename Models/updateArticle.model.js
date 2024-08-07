@@ -1,7 +1,7 @@
 const db = require('../db/connection');
 
 function update_Article(article_id, inc_votes) {
-    // Validate input
+  
     if (isNaN(article_id)) {
         return Promise.reject({
             status: 400,

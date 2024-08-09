@@ -1,39 +1,24 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const cors = require('cors');
-
-const {
-  addNewComment,
-  deleteComment,
-  fetchArticleById,
-  fetchAllTopics,
-  getAllArticles,
-  getALLapi,
-  selectCommentsByArticleId,
-  updateArticle,
-  fetchAllUsers,
-} = require("./Controllers/index.js");
+const userRouter = require('./routes/users');
+const articleRouter = require('./routes/article');
+const topicRouter = require('./routes/topics');
+const commentRouter = require('./routes/comments')
+const getAllapi = require('./Controllers/getAPI.controller')
+ // Middlewares
 app.use(cors());
 app.use(express.json());
 
+// Route Handlers
+app.use('/api/users', userRouter);
+app.use('/api/articles', articleRouter);
+app.use('/api/topics', topicRouter);
+app.use('/api/comments' , commentRouter)
 
-app.get("/api/topics", fetchAllTopics);
 
-app.get("/api", getALLapi);
-
-app.get("/api/articles/:article_id", fetchArticleById);
-
-app.get("/api/articles", getAllArticles);
-
-app.get("/api/articles/:article_id/comments", selectCommentsByArticleId);
-
-app.get("/api/users", fetchAllUsers);
-
-app.post("/api/articles/:article_id/comments", addNewComment);
-
-app.patch("/api/articles/:article_id", updateArticle);
-
-app.delete("/api/comments/:comment_id", deleteComment);
+app.get('/api' ,getAllapi )
+// Error Handling Middleware
 
 app.use((err, request, response, next) => {
     if(err.code === '22P02' || err.code === '23502'){
@@ -57,7 +42,4 @@ app.use((error, req, res, next) => {
   }
   res.status(500).send({ msg: "Internal Srver Error" });
 });
-
-
-
 module.exports = app;

@@ -1,13 +1,19 @@
-const fs = require("fs")
+const fs = require("fs");
+const path = require("path");
+const endpointPath = path.join(__dirname, '../endpoints.json'); 
 
-const getALLapi = ((req, resp, next)=>{
-   try{
-    const apidata = fs.readFileSync('/Users/sultandara/Desktop/NorthCoders/backend/be-nc-news/endpoints.json', 'utf-8')
-    resp.status(200).send(JSON.parse(apidata))
-   }catch(err){
-    next(err)
-   }
+const getALLapi = (req, res, next) => {
+  try {
+    const endpoint = fs.readFileSync(endpointPath, "utf8");
+    
+ 
+    const data = JSON.parse(endpoint);
 
-})
 
-module.exports = getALLapi
+    res.status(200).send(data);
+  } catch (err) {
+   next(err)
+  }
+};
+
+module.exports = getALLapi;

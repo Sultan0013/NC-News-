@@ -462,7 +462,7 @@ describe("PATCH /api/articles/:article_id", () => {
             author: expect.any(String),
             body: expect.any(String),
             created_at: expect.any(String),
-            votes: expect.any(Number) && 10, //check if it incremented the votes and for it is type
+            votes: expect.any(Number) && 10, 
             article_img_url: expect.any(String),
           })
         );
@@ -489,7 +489,7 @@ describe("PATCH /api/articles/:article_id", () => {
             author: expect.any(String),
             body: expect.any(String),
             created_at: expect.any(String),
-            votes: expect.any(Number) && 10, //check if it incrmented the votes and for it is type
+            votes: expect.any(Number) && 10, 
             article_img_url: expect.any(String),
           })
         );
@@ -551,7 +551,9 @@ describe("PATCH /api/articles/:article_id", () => {
 
 describe("DELETE /api/comments/:comment_id", () => {
   it("DELETE 204 : No content - drops the specifc comment specifed by comment-id", () => {
-    return request(app).delete("/api/comments/2").expect(204);
+    return request(app)
+      .delete("/api/comments/2")
+      .expect(204);
   });
 
   it("DELETE 400 :bad request - responds with error for invalid ids", () => {
@@ -592,25 +594,28 @@ describe("Get /api/users", () => {
       });
   });
 
-  // describe('GEt /api/users/:username', () => {
-  //   it('GET 200 :should respond with an object of username , avatar_url and name', () => {
-  //     return request(app)
-  //       .get('/api/user/rogersop')
-  //       .expect(200)
-  //       .then(({ body }) => {
+  describe('GEt /api/users/:username', () => {
+
+ 
+    it('GET 200 :should respond with an object of username , avatar_url and name', () => {
+    
+      return request(app)
+        .get('/api/users/rogersop')
+        .expect(200)
+        .then(({ body }) => {
           
         
-  //         expect(body.user).toEqual(
-  //           expect.objectContaining({
-  //             username: expect.any(String) && "rogersop",
-  //             avatar_url: expect.any(String),
-  //             name : expect.any(String)
-  //         })
-  //       )
-  //     })
-  //   });
+          expect(body).toEqual(
+            expect.objectContaining({
+              username: expect.any(String) && "rogersop",
+              avatar_url: expect.any(String),
+              name : expect.any(String)
+          })
+        )
+      })
+    });
 
 
-  // })
+  })
  
 });

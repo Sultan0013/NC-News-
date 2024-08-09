@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { fetchAllTopics } = require('../controllers/index');
+const  fetchAllTopics  = require('../controllers/fetchAllTopics.controller');
 
 
 router.get('/', fetchAllTopics);

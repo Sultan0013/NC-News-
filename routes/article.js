@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const {
-  fetchArticleById,
-  getAllArticles,
-  selectCommentsByArticleId,
-  addNewComment,
-  updateArticle,
-  deleteComment
-} = require('../controllers/index');
+
+   const  fetchArticleById  = require('../Controllers/fetArticlesById.controller')
+ const  getAllArticles = require('../Controllers/getAllArticles.controller')
+ const   selectCommentsByArticleId = require('../Controllers/selectCommentsByArticleID.controller')
+ const  addNewComment = require('../Controllers/addNewComment.controller')
+ const updateArticle = require('../Controllers/updateArticle.controller')
+ const  deleteComment = require('../Controllers/deleteComment.controller')
+
 
 
 router.get('/', getAllArticles);

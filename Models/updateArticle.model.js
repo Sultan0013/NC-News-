@@ -18,7 +18,7 @@ function update_Article(article_id, inc_votes) {
     `;
     const values = [inc_votes, article_id];
 
-    // Check if article exists
+   
     return db.query(checkQuery, [article_id])
         .then(({ rows }) => {
             if (rows.length === 0) {
@@ -28,7 +28,7 @@ function update_Article(article_id, inc_votes) {
                 });
             }
 
-            // Proceed with updating the vote count
+  
             return db.query(updateQuery, values);
         })
         .then(({ rows }) => {

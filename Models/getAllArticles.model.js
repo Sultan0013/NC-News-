@@ -3,7 +3,7 @@ const db = require('../db/connection')
 
 function fetchAllArticles (sort_by = "created_at" , order='desc' , topic){
 
-  const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'article_img_url'];
+  const validColumns = ['author', 'title', 'article_id', 'topic', 'created_at', 'votes', 'article_img_url', 'comment_count'];
   const validOrders = ['asc', 'desc'];
   if (!validColumns.includes(sort_by)) {
       return Promise.reject({ status: 400, msg: 'Invalid sort_by column' });

@@ -1,7 +1,7 @@
 const db = require("../db/connection.js");
 const request = require("supertest");
 const app = require("../app.js");
-require('jest-sorted')
+require("jest-sorted");
 const {
   articleData,
   commentData,
@@ -57,20 +57,21 @@ describe("GET/api/articles/article_id", () => {
       .get("/api/articles/5")
       .expect(200)
       .then(({ body }) => {
-        expect(body.article[0]).toEqual(expect.objectContaining({
-          article_id: expect.any(Number) && 5,
-          title: expect.any(String),
-          topic: expect.any(String),
-          author: expect.any(String),
-          body: expect.any(String),
-          created_at:expect.any(String),
-          votes: expect.any(Number) ,
-          article_img_url: expect.any(String),
-          comment_count: expect.any(Number) 
-        }));
+        expect(body.article[0]).toEqual(
+          expect.objectContaining({
+            article_id: expect.any(Number) && 5,
+            title: expect.any(String),
+            topic: expect.any(String),
+            author: expect.any(String),
+            body: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            article_img_url: expect.any(String),
+            comment_count: expect.any(Number),
+          })
+        );
       });
   });
-
 
   it("GET 400: should respond with error of bad request when article id is not a number ", () => {
     return request(app)
@@ -113,108 +114,100 @@ describe("GET /api/articles", () => {
         });
       });
   });
-  describe('GET /api/articles sorting queries', () => {
-    it('GET 200: responds with the articles where the sort by and order is default ', () => {
+  describe("GET /api/articles sorting queries", () => {
+    it("GET 200: responds with the articles where the sort by and order is default ", () => {
       return request(app)
-        .get('/api/articles')
+        .get("/api/articles")
         .expect(200)
-        .then(({body})=>{
-          expect(body.articles).toBeSortedBy('created_at',{descending : true})
-        })
-    })
+        .then(({ body }) => {
+          expect(body.articles).toBeSortedBy("created_at", {
+            descending: true,
+          });
+        });
+    });
 
-
-    it('GET 200: responds with the articles array where they are in sort of author and ascending order', () => {
+    it("GET 200: responds with the articles array where they are in sort of author and ascending order", () => {
       return request(app)
-        .get('/api/articles?sort_by=author&order=asc')
+        .get("/api/articles?sort_by=author&order=asc")
         .expect(200)
-        .then(({body})=>{
-          expect(body.articles).toBeSortedBy('author',{descending: false})
-        })
-    })
+        .then(({ body }) => {
+          expect(body.articles).toBeSortedBy("author", { descending: false });
+        });
+    });
 
-    it('GET 400: responds with error 400 when the passed sortby value is not included in the sort_by columns array', () => {
+    it("GET 400: responds with error 400 when the passed sortby value is not included in the sort_by columns array", () => {
       return request(app)
-        .get('/api/articles?sort_by=body&order=asc')
+        .get("/api/articles?sort_by=body&order=asc")
         .expect(400)
-        .then((resp)=>{
-          expect(resp.text).toBe("Invalid sort_by column")
-        })
-    })
+        .then((resp) => {
+          expect(resp.text).toBe("Invalid sort_by column");
+        });
+    });
 
-    it('GET 400: responds with error 400 when the passed order value is not included in the order array', () => {
+    it("GET 400: responds with error 400 when the passed order value is not included in the order array", () => {
       return request(app)
-        .get('/api/articles?sort_by=created_at&order=invalid_order')
+        .get("/api/articles?sort_by=created_at&order=invalid_order")
         .expect(400)
-        .then((resp)=>{
-          expect(resp.text).toBe("Invalid order value")
-        })
-    })
+        .then((resp) => {
+          expect(resp.text).toBe("Invalid order value");
+        });
+    });
+  });
 
-  })
-
-  describe('GET/api/articles topic query', () => {
-    it('GET 200: responds with the article with the specific topic ', () => {
+  describe("GET/api/articles topic query", () => {
+    it("GET 200: responds with the article with the specific topic ", () => {
       return request(app)
-        .get('/api/articles?topic=cats')
+        .get("/api/articles?topic=cats")
         .expect(200)
-        .then(({body})=>{
-      
-          expect(body.articles[0]).toEqual(expect.objectContaining({
-            author: expect.any(String),
-            title: expect.any(String),
-            article_id:expect.any(Number),
-            topic: expect.any(String)&& 'cats',
-            created_at: expect.any(String),
-            votes:expect.any(Number),
-            article_img_url: expect.any(String),
-            comment_count: expect.any(Number)
-          }))
-        
-        })
-
-        
-    })
-
-    it('GET 200: responds with the articles with the specific topic  sorted and ordered', () => {
-      return request(app)
-        .get('/api/articles?sort_by=title&order=asc&topic=mitch')
-        .expect(200)
-        .then(({body})=>{
-          expect(body.articles).toBeSortedBy('title',{descending : false})
-          body.articles.forEach((article)=>{
-            expect(article).toEqual(expect.objectContaining({
+        .then(({ body }) => {
+          expect(body.articles[0]).toEqual(
+            expect.objectContaining({
               author: expect.any(String),
               title: expect.any(String),
-              article_id:expect.any(Number),
-              topic: expect.any(String) && "mitch",
+              article_id: expect.any(Number),
+              topic: expect.any(String) && "cats",
               created_at: expect.any(String),
-              votes:expect.any(Number),
+              votes: expect.any(Number),
               article_img_url: expect.any(String),
-              comment_count: expect.any(Number)
-            }))
-          })
-        
-        })
-        })
+              comment_count: expect.any(Number),
+            })
+          );
+        });
+    });
 
-
-
- it('GET 400: responds with error 400 when the passed topic is not in the article', () => {
+    it("GET 200: responds with the articles with the specific topic  sorted and ordered", () => {
       return request(app)
-        .get('/api/articles?topic=123')
+        .get("/api/articles?sort_by=title&order=asc&topic=mitch")
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.articles).toBeSortedBy("title", { descending: false });
+          body.articles.forEach((article) => {
+            expect(article).toEqual(
+              expect.objectContaining({
+                author: expect.any(String),
+                title: expect.any(String),
+                article_id: expect.any(Number),
+                topic: expect.any(String) && "mitch",
+                created_at: expect.any(String),
+                votes: expect.any(Number),
+                article_img_url: expect.any(String),
+                comment_count: expect.any(Number),
+              })
+            );
+          });
+        });
+    });
+
+    it("GET 400: responds with error 400 when the passed topic is not in the article", () => {
+      return request(app)
+        .get("/api/articles?topic=123")
         .expect(404)
-        .then((resp)=>{
-          expect(resp.text).toBe("Not Found")
-        })
-    })
-  })
-  
+        .then((resp) => {
+          expect(resp.text).toBe("Not Found");
+        });
+    });
+  });
 });
-
-
-
-
 
 describe("GET/api/:article_id/comments", () => {
   it("GET 200: should respond with an array of comments ", () => {
@@ -371,7 +364,6 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(404)
       .then(({ text }) => {
-      
         expect(text).toBe("Not Found");
       });
   });
@@ -438,7 +430,7 @@ describe("PATCH /api/articles/:article_id", () => {
             author: expect.any(String),
             body: expect.any(String),
             created_at: expect.any(String),
-            votes: expect.any(Number) && 90,  
+            votes: expect.any(Number) && 90,
             article_img_url: expect.any(String),
           })
         );
@@ -462,14 +454,12 @@ describe("PATCH /api/articles/:article_id", () => {
             author: expect.any(String),
             body: expect.any(String),
             created_at: expect.any(String),
-            votes: expect.any(Number) && 10, 
+            votes: expect.any(Number) && 10,
             article_img_url: expect.any(String),
           })
         );
       });
   });
-
-  
 
   it("PATCH 201 : increments the article votes  and responds with the updated article votes and ignores any extra property of voteInfo", () => {
     const voteInfo = {
@@ -489,7 +479,7 @@ describe("PATCH /api/articles/:article_id", () => {
             author: expect.any(String),
             body: expect.any(String),
             created_at: expect.any(String),
-            votes: expect.any(Number) && 10, 
+            votes: expect.any(Number) && 10,
             article_img_url: expect.any(String),
           })
         );
@@ -551,9 +541,7 @@ describe("PATCH /api/articles/:article_id", () => {
 
 describe("DELETE /api/comments/:comment_id", () => {
   it("DELETE 204 : No content - drops the specifc comment specifed by comment-id", () => {
-    return request(app)
-      .delete("/api/comments/2")
-      .expect(204);
+    return request(app).delete("/api/comments/2").expect(204);
   });
 
   it("DELETE 400 :bad request - responds with error for invalid ids", () => {
@@ -581,7 +569,7 @@ describe("Get /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then(({ body }) => {
-        expect(body.users).toEqual(userData)
+        expect(body.users).toEqual(userData);
         body.users.forEach((user) => {
           expect(user).toEqual(
             expect.objectContaining({
@@ -594,28 +582,43 @@ describe("Get /api/users", () => {
       });
   });
 
-  describe('GEt /api/users/:username', () => {
-
- 
-    it('GET 200 :should respond with an object of username , avatar_url and name', () => {
-    
+  describe("/api/users/:username", () => {
+    it("GET 200 :should respond with an object of username , avatar_url and name", () => {
       return request(app)
-        .get('/api/users/rogersop')
+        .get("/api/users/rogersop")
         .expect(200)
         .then(({ body }) => {
-          
-        
           expect(body).toEqual(
             expect.objectContaining({
               username: expect.any(String) && "rogersop",
               avatar_url: expect.any(String),
-              name : expect.any(String)
-          })
-        )
-      })
+              name: expect.any(String),
+            })
+          );
+        });
     });
 
+    it("POST 201 : should create a new user ", () => {
+      const newUser = {
+        username: "sultan2023",
+        name: "Sultan Dara",
+        avatar_url:
+          "https://gravatar.com/avatar/884264e01b4357925cac33546a477af6?s=400&d=robohash&r=g",
+      };
 
-  })
- 
+      return request(app)
+        .post("/api/users/signup")
+        .send(newUser)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.user).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+              name: expect.any(String),
+              avatar_url: expect.any(String),
+            })
+          );
+        });
+    });
+  });
 });

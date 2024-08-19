@@ -34,7 +34,7 @@ app.use((error, req, res, next) => {
   if (error.status) {
     res.status(error.status).send(error.msg);
   }
-  res.status(500).send({ msg: "Internal Srver errro", error });
+  res.status(500).send({ msg: "Internal Srver error" });
 });
 
 // app.listen(9000, () => {

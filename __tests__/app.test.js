@@ -585,8 +585,7 @@ describe("Get /api/users", () => {
   describe("/api/users/login", () => {
     it("GET 200 :should respond with an object of username , avatar_url and name", () => {
       return request(app)
-        .get("/api/users/login")
-        .send({ username: "rogersop" })
+        .get("/api/users/rogersop")
         .expect(200)
         .then(({ body }) => {
           expect(body).toEqual(

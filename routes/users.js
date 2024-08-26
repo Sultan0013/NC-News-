@@ -5,7 +5,7 @@ const fetchAllUsers = require("../Controllers/fetchAllUsers.controller");
 const { createNewUser } = require("../Controllers");
 
 router.get("/", fetchAllUsers);
-router.get("/login", fetchUserByUserName);
+router.get("/:username", fetchUserByUserName);
 router.post("/signup", createNewUser);
 
 module.exports = router;

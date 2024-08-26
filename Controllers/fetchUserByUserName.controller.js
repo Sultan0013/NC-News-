@@ -1,7 +1,7 @@
 const fetchUser = require("../Models/fetchUserByUsername.model");
 
 function fetchUserByUserName(req, res, next) {
-  const username = req.params.username;
+  const username = req.body.username;
 
   fetchUser(username)
     .then((user) => {

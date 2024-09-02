@@ -1,6 +1,7 @@
 const db = require("../db/connection.js");
 const request = require("supertest");
 const app = require("../app.js");
+const endpointsJson = require("../endpoints.json");
 require("jest-sorted");
 const {
   articleData,
@@ -44,9 +45,8 @@ describe("GET /api", () => {
     return request(app)
       .get("/api")
       .expect(200)
-      .then(({ body }) => {
-        const endpointsJson = require("../endpoints.json");
-        expect(body).toEqual(endpointsJson);
+      .then((response) => {
+        expect(response.body).toEqual(endpointsJson);
       });
   });
 });

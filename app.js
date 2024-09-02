@@ -9,13 +9,11 @@ const getAllapi = require("./Controllers/getAPI.controller.js");
 
 app.use(cors());
 app.use(express.json());
-
+app.get("/api", getAllapi);
 app.use("/api/users", userRouter);
 app.use("/api/articles", articleRouter);
 app.use("/api/topics", topicRouter);
 app.use("/api/comments", commentRouter);
-
-app.get("/api", getAllapi);
 
 app.use((err, request, response, next) => {
   if (err.code === "22P02" || err.code === "23502") {

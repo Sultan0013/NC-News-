@@ -8,7 +8,7 @@ This project is the backend powerhouse for a news application, created as part o
 
 - **Live Front-End:** Check out the deployed front-end [here](https://nc-news-sultan.netlify.app/).
 
-- **Front-End Repository:** Explore the back-end on [GitHub](https://github.com/Sultan0013/NC-news-FE), where you'll find full setup instructions for running it locally.
+- **Front-End Repository:** Explore the front-end on [GitHub](https://github.com/Sultan0013/NC-news-FE), where you'll find full setup instructions for running it locally.
 
 ## 🌐 Hosted API
 

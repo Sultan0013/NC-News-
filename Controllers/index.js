@@ -1,6 +1,6 @@
 exports.addNewComment = require("./addNewComment.controller");
 exports.deleteComment = require("./deleteComment.controller");
-exports.fetchArticleById = require("./fetArticlesById.controller");
+exports.fetchArticleById = require("./fetchArticlesById.controller");
 exports.fetchAllTopics = require("./fetchAllTopics.controller");
 exports.getAllArticles = require("./getAllArticles.controller");
 exports.getALLapi = require("./getAPI.controller");

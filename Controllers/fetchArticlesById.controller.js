@@ -4,7 +4,7 @@ const fetchArticleById = (req , res , next)=>{
 
     getArticle(article_id).then(({rows})=>{
         if(rows.length === 0 ){
-            res.status(404).send("Not Found")
+            return res.status(404).send("Not Found")
         }
    res.status(200).send( {article : rows})
     }).catch((err)=>{

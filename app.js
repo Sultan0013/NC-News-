@@ -30,9 +30,9 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   if (error.status) {
-    res.status(error.status).send(error.msg);
+    return res.status(error.status).send(error.msg);
   }
-  res.status(500).send({ msg: "Internal Srver error" });
+  res.status(500).send({ msg: "Internal Server error" });
 });
 
 // app.listen(9000, () => {

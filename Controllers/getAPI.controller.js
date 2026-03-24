@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const endpointPath = path.join(__dirname, "../endpoints.json");
-const endpoints = require("../endpoints.json");
 const getALLapi = (req, res, next) => {
   try {
     const endpoint = fs.readFileSync(endpointPath, "utf8");

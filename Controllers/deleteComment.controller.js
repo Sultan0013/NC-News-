@@ -1,5 +1,5 @@
-const delete_comment = require("../Models/delectComment.model")
-const delectComment = (req ,resp, next)=>{
+const delete_comment = require("../Models/deleteComment.model")
+const deleteComment = (req ,resp, next)=>{
     const {comment_id} = req.params
   
    
@@ -11,4 +11,4 @@ const delectComment = (req ,resp, next)=>{
     })
 }
 
-module.exports = delectComment
+module.exports = deleteComment

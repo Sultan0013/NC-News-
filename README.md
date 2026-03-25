@@ -1,79 +1,103 @@
-# 📰 NC News BackEnd
+# NC News — Backend API
 
-Welcome to the **NC News Backend**! 🎉 This is your one-stop-shop for all things related to news articles, comments, topics, and users. Developed with care and precision, this API is designed to handle all your news needs with a touch of flair!
+A RESTful news API built with **Node.js**, **Express**, and **PostgreSQL**, developed during the Northcoders Full-Stack bootcamp using Test-Driven Development throughout.
 
-## 🚀 Project Overview
+Supports articles, comments, topics, and users — with filtering, sorting, and pagination on key endpoints.
 
-This project is the backend powerhouse for a news application, created as part of the **Digital Skills Bootcamp in Software Engineering** by Northcoders. Built with **Express.js** and **PostgreSQL**, and guided by the principles of **Test-Driven Development (TDD)**, this API is robust, scalable, and ready for action! 💪
+---
 
-- **Live Front-End:** Check out the deployed front-end [here](https://nc-news-sultan.netlify.app/).
+## 🔗 Links
 
-- **Front-End Repository:** Explore the front-end on [GitHub](https://github.com/Sultan0013/NC-news-FE), where you'll find full setup instructions for running it locally.
+- **Live API:** [nc-news-vvdv.onrender.com/api](https://nc-news-vvdv.onrender.com/api)
+- **Frontend:** [nc-news-sultan.netlify.app](https://nc-news-sultan.netlify.app/)
+- **Frontend Repo:** [github.com/Sultan0013/NC-news-FE](https://github.com/Sultan0013/NC-news-FE)
 
-## 🌐 Hosted API
+> ⚠️ Hosted on Render's free tier — may take 30–60 seconds to wake on first request.
 
-Our API is live and kicking on Render! You can explore all available endpoints here:
+---
 
-🔗 **[NC News API Endpoints](https://nc-news-vvdv.onrender.com/api)**
+## 🛠 Tech Stack
 
-In case you need to give the API a little nudge (sometimes services need a quick refresh), you can trigger a redeployment here:
+| Layer | Technology |
+|---|---|
+| Runtime | Node.js |
+| Framework | Express.js |
+| Database | PostgreSQL |
+| ORM/Query | pg (node-postgres) |
+| Testing | Jest + Supertest |
 
-🔄 **[Trigger API Redeployment](https://api.render.com/deploy/srv-cqd8ggrv2p9s73ea1rc0?key=tMSCoQq8OfE)**
+---
 
-## 🛠️ Setup & Installation
+## 📡 API Endpoints
 
-Ready to dive in? Here’s how to get the API up and running on your local machine:
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api` | List all available endpoints |
+| GET | `/api/topics` | Get all topics |
+| GET | `/api/articles` | Get all articles (supports `sort_by`, `order`, `topic`, `limit`, `p`) |
+| GET | `/api/articles/:id` | Get article by ID |
+| GET | `/api/articles/:id/comments` | Get comments for an article |
+| POST | `/api/articles/:id/comments` | Post a comment |
+| PATCH | `/api/articles/:id` | Update article votes |
+| DELETE | `/api/comments/:id` | Delete a comment |
+| GET | `/api/users` | Get all users |
+| GET | `/api/users/:username` | Get user by username |
 
-### 1. Clone the Repository 📂
+---
 
+## ⚙️ Local Setup
+
+### 1. Clone the repo
 ```bash
-git clone https://github.com/Sultan0013/NC-News-BE.git
+git clone https://github.com/AOYousufi/NC-News-BE.git
 cd NC-News-BE
 ```
 
-### 2. Install Dependencies 📦
-
+### 2. Install dependencies
 ```bash
 npm install
 ```
 
-### 3. Setup Environment Variables 🛠️
+### 3. Create environment files
 
-Create two `.env` files at the root of the project:
+Create two files at the project root:
 
-- **`.env.development`:**
-
-```makefile
+**.env.development**
+```
 PGDATABASE=nc_news
 ```
 
-- **`.env.test`:**
-
-```makefile
+**.env.test**
+```
 PGDATABASE=nc_news_test
 ```
 
-### 4. Initialize the Databases 🗄️
+> These files are gitignored — never commit them.
 
-Run the following commands to initialize and seed the databases:
-
+### 4. Set up and seed the database
 ```bash
 npm run setup-dbs
 npm run seed
 ```
 
-### 5. Run the Tests ✅
-
-Ensure everything is working perfectly by running the test suite:
-
+### 5. Run tests
 ```bash
 npm run app-test
 ```
 
-### 🧑‍💻 Contributing
+---
 
-We welcome contributions! Feel free to fork the repository and submit pull requests. Let’s make this project even better together! 💼
+## 🧪 Testing
+
+All endpoints are covered by integration tests using **Jest** and **Supertest**. Tests run against a separate test database and reseed before each test suite to ensure isolation.
 
 ---
 
-This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
+## Requirements
+
+- Node.js `v18+`
+- PostgreSQL `v14+`
+
+---
+
+*Built as part of the Northcoders Digital Skills Bootcamp in Software Engineering.*
